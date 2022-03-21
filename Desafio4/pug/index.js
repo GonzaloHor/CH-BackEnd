@@ -5,15 +5,16 @@ const router = Router()
 const fs = require('fs')
 
 
-app.use('/', express.static(__dirname + '/views/index.hbs'));
 
-app.set('view engine', 'hbs');
-app.set('views', './views');
+app.use('/', express.static(__dirname + '/views/index.pug'));
 
 
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+
+app.set('views','./views');
+app.set('view engine', 'pug');
 
 
 
@@ -78,7 +79,7 @@ router.route('/productos')
         
 
      
-        res.render('productos', {datos: todosLosProductos})
+        res.render('productos.pug', {datos : todosLosProductos})
                              
                         
                         
@@ -102,49 +103,14 @@ router.route('/productos')
     })
 
     
-router.route('/productos/:id')
+router.route('/')
+    .get((req, res) =>{
+        res.render('index.pug')
+    })
+
+router.route('/:id')
     .get((req, res) => {
-
-        let id = req.params.id
-        
-        let todosLosProductos = productos.readFile()
-        
-        let producto = todosLosProductos.find(e => e.id == id)
-
-
-        if(producto == undefined) {producto = { error : 'producto no encontrado' }}
-                        
-        res.send(producto)                
-    })
-    .put((req, res) => {
- 
-        const id = req.params.id
-        const nuevoProducto = req.body
-    
-        
-        let todosLosProductos = productos.readFile()
-        
-        let producto = todosLosProductos.find(e => e.id == id)
-        if(producto == undefined) {
-    
-            producto = { error : 'producto no encontrado' } 
-            res.send(producto) 
-        }
-    
-        nuevoProducto.id = producto.id
-    
-        let nuevoObjeto = todosLosProductos.filter((e) => e.id !== producto.id)
-        nuevoObjeto.push(nuevoProducto)
-      
-        productos.writeFile(nuevoObjeto)
-    
-        res.send(`Producto actualizado correctamente`) 
-    
-    
-    })
-    .delete((req, res) => {
-    
-    
+  
         const id = req.params.id
         let todosLosProductos = productos.readFile()
     
@@ -157,14 +123,11 @@ router.route('/productos/:id')
     
         let nuevoObjeto = todosLosProductos.filter((e) => e.id !== producto.id)
         productos.writeFile(nuevoObjeto)
+
+        
     
-        res.send(`Producto eliminado correctamente`) 
-    
+        res.redirect('/productos')
     
     })
-
-
-
-
 
 app.listen(8080)

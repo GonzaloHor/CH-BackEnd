@@ -1,0 +1,26 @@
+[
+	{
+		"Title": "Pato",
+		"Price": "123",
+		"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/starship-256.png",
+		"id": 1
+	},
+	{
+		"Title": "Casa",
+		"Price": "123",
+		"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/planets-256.png",
+		"id": 2
+	},
+	{
+		"Title": "Rayo",
+		"Price": "3999",
+		"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/laser_gun-128.png",
+		"id": 3
+	},
+	{
+		"Title": "Nave",
+		"Price": "20000",
+		"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/UFO-512.png",
+		"id": 4
+	}
+]

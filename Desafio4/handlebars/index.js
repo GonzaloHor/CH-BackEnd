@@ -78,7 +78,7 @@ router.route('/productos')
         
 
      
-        res.render('productos', {datos: todosLosProductos})
+        res.render('productos.hbs', {datos: todosLosProductos})
                              
                         
                         
@@ -102,49 +102,15 @@ router.route('/productos')
     })
 
     
-router.route('/productos/:id')
+
+router.route('/')
     .get((req, res) => {
-
-        let id = req.params.id
-        
-        let todosLosProductos = productos.readFile()
-        
-        let producto = todosLosProductos.find(e => e.id == id)
-
-
-        if(producto == undefined) {producto = { error : 'producto no encontrado' }}
-                        
-        res.send(producto)                
+        res.render('index')                                      
     })
-    .put((req, res) => {
- 
-        const id = req.params.id
-        const nuevoProducto = req.body
-    
-        
-        let todosLosProductos = productos.readFile()
-        
-        let producto = todosLosProductos.find(e => e.id == id)
-        if(producto == undefined) {
-    
-            producto = { error : 'producto no encontrado' } 
-            res.send(producto) 
-        }
-    
-        nuevoProducto.id = producto.id
-    
-        let nuevoObjeto = todosLosProductos.filter((e) => e.id !== producto.id)
-        nuevoObjeto.push(nuevoProducto)
-      
-        productos.writeFile(nuevoObjeto)
-    
-        res.send(`Producto actualizado correctamente`) 
-    
-    
-    })
-    .delete((req, res) => {
-    
-    
+
+router.route('/producto/delete/:id')
+    .get((req, res) => {
+  
         const id = req.params.id
         let todosLosProductos = productos.readFile()
     
@@ -157,13 +123,12 @@ router.route('/productos/:id')
     
         let nuevoObjeto = todosLosProductos.filter((e) => e.id !== producto.id)
         productos.writeFile(nuevoObjeto)
+
+        
     
-        res.send(`Producto eliminado correctamente`) 
-    
+        res.redirect('/productos')
     
     })
-
-
 
 
 
