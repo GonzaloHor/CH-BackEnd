@@ -59,7 +59,7 @@ class creteFile{
 let productos = new creteFile('Productos');
 
 
-app.use('/', router)
+app.use('/api', router)
 
 app.listen(() => {
     try {
