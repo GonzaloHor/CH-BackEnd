@@ -1,5 +1,5 @@
-const { optionsSqlite } = require('./options/SQLite3')
-const knex = require('knex')(optionsSqlite);
+const { options } = require('./options/mariaDB.js')
+const knex = require('knex')(options);
 
 
 
@@ -15,3 +15,4 @@ knex.schema.createTable('mensajes',table =>{
 .finally(()=>{
     knex.destroy();
 })
+

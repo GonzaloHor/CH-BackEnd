@@ -12,9 +12,14 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.3",
-    "knex": "^1.0.5",
+    "express-handlebars": "^6.0.5",
+    "hbs": "^4.2.0",
+    "knex": "^0.95.15",
+    "mongoose": "^6.3.3",
     "mysql": "^2.18.1",
-    "socket.io": "^4.4.1",
-    "sqlite3": "^5.0.2"
+    "socket.io": "^4.4.1"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^6.3.1"
   }
 }

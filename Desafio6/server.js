@@ -2,17 +2,20 @@ const express = require('express')
 const { Router } = express
 const app = express()
 const { options } = require('./options/mariaDB.js')
-const { optionsSqlite } = require('./options/SQLite3')
+const { faker } = require('@faker-js/faker');
+const mongoose = require('mongoose')
+const MongoMensajes = require('./src/ContenedorMogoDB.js')
+
+
 
 const knex = require('knex')(options);
-const knexSqlite = require('knex')(optionsSqlite);
 
 
 
 
 const { Server: HttpServer } = require('http');
 const { Server: IOServer } = require('socket.io');
-const { getCipherInfo } = require('crypto');
+const { application } = require('express');
 
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
@@ -20,6 +23,10 @@ const io = new IOServer(httpServer)
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+
+
+app.set('view engine', 'hbs');
+
 
 
 
@@ -34,8 +41,14 @@ httpServer.listen(8080, function() {
 const getProducts = async () => {
 
     const data = await knex('products')
+
     const dataMensajes = await knex('mensajes')
 
+
+    mongoose.connect("mongodb://localhost:27017/mensajes", {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
 
 
     io.sockets.emit('productos', data);
@@ -93,20 +106,14 @@ io.on('connection',socket => {
                 let tiempoMensaje =  `${fecha} ${hora} `
         
                 nuevoMensaje.dataTimeMensaje = tiempoMensaje
-        
-                
-        
-                    knex('mensajes').insert(nuevoMensaje)
-                    .then(()=> console.log('Mensaje Agregado'))
-                    .catch((err)=> { console.log(err); throw err})
-                    .finally(()=>{
-                        knex.destroy();
-                        })
-              
-            
-                
-        
-                        getProducts()
+    
+
+
+                const mensajeMongo = new MongoMensajes();
+                const respuesta = mensajeMongo.guardarNuevoMensaje(nuevoMensaje);
+                       
+                        
+                        
     });
 
 
@@ -127,10 +134,36 @@ io.on('connection',socket => {
 });
 
 
+app.get('/api/productos-test', (req, res) => {
+
+
+    let usarios = [];
 
 
 
-app.use(express.static("public"));
+    for(i= 0;i < 5;i++){
+        let dato = {
+            Nombre: faker.commerce.product(),
+            Precio: faker.commerce.price(),
+            Imagen: faker.image.imageUrl()
+        }
+
+        usarios.push(dato)
+    }
+
+    
+
+
+
+
+
+
+
+    res.render('nuevo', {usarios})
+
+})
+
+
 
 
 
